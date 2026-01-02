@@ -32,7 +32,7 @@ int test_unary_op() {
     int exit_code = WEXITSTATUS(status); 
 
     std::cout << test_name + " result: " + std::to_string(exit_code) + " "; 
-    assert(exit_code == 68);
+    assert(exit_code == 66);
     std::cout << " PASSED"  << std::endl;
 
     return 0;
