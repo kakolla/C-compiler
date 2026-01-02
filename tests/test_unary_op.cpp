@@ -6,23 +6,20 @@
 
 extern std::string compile_program(Expression* e, std::string func_name);
 
-int test_binary_primitive_add() {
-    std::string test_name = "test_binary_primitive_add";
+int test_unary_op() {
+    std::string test_name = "test_unary_op";
     Expression number = {
         .type=ExpressionType::IntLiteral,
         .int_val=67
     };
-    Expression number2 = {
-        .type=ExpressionType::IntLiteral,
-        .int_val=42
-    };
 
     Expression testAST = {
-        .type=ExpressionType::BinaryOp,
-        .binary_op = BinaryOpType::Add,
-        .operand1=&number,
-        .operand2=&number2
+        .type=ExpressionType::UnaryOp,
+        .unary_op=UnaryOpType::Add1,
+        .operand=&number
     };
+
+    /* compile code for AST, run, and verify output*/
     std::string asm_code = compile_program(&testAST , "_main");
 
     // save asm file
@@ -35,7 +32,8 @@ int test_binary_primitive_add() {
     int exit_code = WEXITSTATUS(status); 
 
     std::cout << test_name + " result: " + std::to_string(exit_code) + " "; 
-    assert(exit_code == 109);
+    assert(exit_code == 68);
     std::cout << " PASSED"  << std::endl;
+
     return 0;
 }
