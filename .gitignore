@@ -1,1 +1,10 @@
 .vscode
+compile_program.dSYM/
+test_driver.dSYM/
+c_entry.o
+c_entry
+compile_program
+.DS_Store
+lexer
+test_driver
+tests/bin/
