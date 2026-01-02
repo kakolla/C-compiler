@@ -45,6 +45,11 @@ std::string emit_primitive_call(Expression* e, int si) {
     // result
     if (e->binary_op == BinaryOpType::Add) {
         res += "add w0, w0, w1\n";
+    } 
+    else if (e->binary_op == BinaryOpType::Mul) { 
+        res += "mul w0, w0, w1\n";
+    } else if (e->binary_op == BinaryOpType::Sub) { 
+        res += "sub w0, w0, w1\n";
     }
 
     return res;
