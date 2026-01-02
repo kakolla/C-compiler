@@ -113,6 +113,9 @@ std::string emit_expr(Expression* e, int si) {
 
 std::string compile_program(Expression* e) {
     std::string res;
+    res += ".globl _c_entry\n"; // asm directives
+    res += "_c_entry:\n";
+
     // allocate stack space
     res += "sub sp, sp, #64\n"; // 64 bytes hardcoded for now
 
@@ -152,8 +155,7 @@ int main() {
 
     std::string asm_code = compile_program(&testAST );
     std::ofstream output_stream("c_entry.s");
-    output_stream << ".globl _c_entry\n"
-        << "_c_entry:\n"
-        << asm_code;
+    output_stream << asm_code;
     
+    output_stream.close();
 }
