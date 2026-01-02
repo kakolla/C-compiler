@@ -7,3 +7,4 @@ compile_program
 .DS_Store
 lexer
 test_driver
+tests/bin/

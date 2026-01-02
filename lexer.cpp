@@ -68,11 +68,11 @@ std::vector<Token> lex(std::string program) {
 }
 
 
-int main() {
+// int main() {
 
-    std::vector<Token> t = lex("int main() milk;");
-    for (auto e : t) {
-        cout << e.token_val << endl;
-    }
-    return 0;
-}
+//     std::vector<Token> t = lex("int main() milk;");
+//     for (auto e : t) {
+//         cout << e.token_val << endl;
+//     }
+//     return 0;
+// }
