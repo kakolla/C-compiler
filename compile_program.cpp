@@ -1,43 +1,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-
-
-// types of expressions
-enum class ExpressionType {
-    IntLiteral,
-    BoolLiteral,
-    CharLiteral,
-    UnaryOp,
-    BinaryOp
-}; // expressions can be int ilteral, bool literal, etc
-
-enum class UnaryOpType {
-    Add1,
-    Sub1
-}; // types of unary operations (++, --)
-
-enum class BinaryOpType {
-    Add, 
-    Sub,
-    Mul
-};
-
-struct Expression {
-    ExpressionType type;
-
-    // expression payload
-    int int_val;
-    int bool_val;
-    char char_val;
-
-    UnaryOpType unary_op; // unary op specific
-    Expression* operand; // to apply unary op on
-
-    BinaryOpType binary_op;
-    Expression* operand1;
-    Expression* operand2; //  binary_op op1 op2
-};
+#include "ast.h"
 
 std::string emit_expr(Expression* e, int si);
 
@@ -111,10 +75,10 @@ std::string emit_expr(Expression* e, int si) {
 }
 
 
-std::string compile_program(Expression* e) {
+std::string compile_program(Expression* e, std::string func_name = "_c_entry") {
     std::string res;
-    res += ".globl _c_entry\n"; // asm directives
-    res += "_c_entry:\n";
+    res += ".globl " + func_name + "\n"; // asm directives
+    res += func_name + ":\n";
 
     // allocate stack space
     res += "sub sp, sp, #64\n"; // 64 bytes hardcoded for now
@@ -126,36 +90,36 @@ std::string compile_program(Expression* e) {
     return res;
 }
 
-int main() {
-    // std::string asm_code = compile_program(31415); // generate assembly code in a file
-    // Expression number = {
-    //     .type=ExpressionType::IntLiteral,
-    //     .int_val=67
-    // };
-    // Expression testAST = {
-    //     .type=ExpressionType::UnaryOp,
-    //     .unary_op=UnaryOpType::Add1,
-    //     .operand=&number
-    // };
+// int main() {
+//     // std::string asm_code = compile_program(31415); // generate assembly code in a file
+//     // Expression number = {
+//     //     .type=ExpressionType::IntLiteral,
+//     //     .int_val=67
+//     // };
+//     // Expression testAST = {
+//     //     .type=ExpressionType::UnaryOp,
+//     //     .unary_op=UnaryOpType::Add1,
+//     //     .operand=&number
+//     // };
 
-    Expression number = {
-        .type=ExpressionType::IntLiteral,
-        .int_val=67
-    };
-    Expression number2 = {
-        .type=ExpressionType::IntLiteral,
-        .int_val=42
-    };
+//     Expression number = {
+//         .type=ExpressionType::IntLiteral,
+//         .int_val=67
+//     };
+//     Expression number2 = {
+//         .type=ExpressionType::IntLiteral,
+//         .int_val=42
+//     };
 
-    Expression testAST = {
-        .type=ExpressionType::BinaryOp,
-        .operand1=&number,
-        .operand2=&number2
-    };
+//     Expression testAST = {
+//         .type=ExpressionType::BinaryOp,
+//         .operand1=&number,
+//         .operand2=&number2
+//     };
 
-    std::string asm_code = compile_program(&testAST );
-    std::ofstream output_stream("c_entry.s");
-    output_stream << asm_code;
+//     std::string asm_code = compile_program(&testAST );
+//     std::ofstream output_stream("c_entry.s");
+//     output_stream << asm_code;
     
-    output_stream.close();
-}
+//     output_stream.close();
+// }
