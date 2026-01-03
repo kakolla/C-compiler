@@ -71,6 +71,8 @@ std::string emit_expr(Expression* e, int si) {
         res += emit_expr(e->operand, si); // recurse and emit asm for the operand (complex expr's result will be in w0 register)
         if (e->unary_op == UnaryOpType::Add1) {
             res += "add w0, w0, #1\n";
+        } else if (e->unary_op == UnaryOpType::Sub1) {
+            res += "sub w0, w0, #1\n";
         }
     } else if (e->type == ExpressionType::BinaryOp) {
         res += emit_primitive_call(e, si);
