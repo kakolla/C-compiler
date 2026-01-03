@@ -13,11 +13,15 @@ extern std::string compile_program(Expression* e, std::string func_name);
 // test funcs
 int test_binary_primitive_add();
 int test_unary_op();
+int test_binary_primitive_mul();
+int test_binary_primitive_nested();
 
 int main(int argc, char** argv) {
     // std::cout << c_entry() << std::endl;
    test_binary_primitive_add();
    test_unary_op();
+   test_binary_primitive_mul();
+   test_binary_primitive_nested();
 
     return 0;   
 }
