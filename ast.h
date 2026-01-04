@@ -1,3 +1,8 @@
+#ifndef ast_h
+#define ast_h
+
+#include <vector>
+#include <string>
 // ast expression definitions
 
 // types of expressions
@@ -35,3 +40,23 @@ struct Expression {
     Expression* operand1;
     Expression* operand2; //  binary_op op1 op2
 };
+
+
+enum class StatementType {
+    Return
+};
+struct Statement {
+    StatementType type;
+    Expression* exp;
+};
+struct Block {
+    std::vector<Statement*> statements;
+};
+struct Function {
+    std::string name;
+    Block* body;
+};
+
+
+
+#endif
