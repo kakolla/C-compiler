@@ -14,6 +14,8 @@ enum class TokenType {
     LParen, // (
     RParen,  // )
     Semicolon, // ;
+    Mul,
+    Plus,
     KeywordInt, // int
     KeywordReturn, // return
     Identifier, // names, like main, x
@@ -48,7 +50,15 @@ std::vector<Token> lex(const std::string& program) {
         } else if (c == ';') {
             tokens.push_back({TokenType::Semicolon, ";"});
             i++;
-        } else if (isdigit(c))  {
+        } else if (c == '*') {
+            tokens.push_back({TokenType::Mul, "*"});
+            i++;  
+        }
+        else if (c == '+') {
+            tokens.push_back({TokenType::Plus, "+"});
+            i++;  
+        }
+        else if (isdigit(c))  {
             //  read digits
             std::string temp;
             while (i < program.size() && isdigit(program[i])) {
@@ -87,12 +97,12 @@ std::vector<Token> lex(const std::string& program) {
 }
 
 
-int main() {
+// int main() {
 
-    std::vector<Token> t = lex("int main() milk;");
+//     std::vector<Token> t = lex("int main() milk;");
     
-    for (auto e : t) {
-        std::cout << e.token_val << std::endl;
-    }
-    return 0;
-}
+//     for (auto e : t) {
+//         std::cout << e.token_val << std::endl;
+//     }
+//     return 0;
+// }
