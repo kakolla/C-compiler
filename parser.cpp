@@ -178,7 +178,7 @@ Expression* parse_factor(std::vector<Token>& tokens) {
         factor_node->type = ExpressionType::IntLiteral;
         factor_node->int_val = std::stoi(expect(tokens, TokenType::IntLiteral).token_val);
         return factor_node;
-    } else if (peek(tokens).type == TokenType::Identifier) {
+    // } else if (peek(tokens).type == TokenType::Identifier) {
         // factor_node = new Expression();
         // factor_node->type = ExpressionType::;
         // factor_node->int_val = std::stoi(expect(tokens, TokenType::IntLiteral).token_val);

@@ -103,6 +103,7 @@ std::string compile_program(Expression* e, std::string func_name = "_c_entry") {
 extern std::vector<Token> lex(const std::string& program);
 extern Function* parse_function(std::vector<Token>& tokens);
 
+#ifdef COMPILE_COMPILER_TRUE
 int main(int argc, char** argv) {
     if (argc < 2) throw std::runtime_error("Too few arguments.");
     std::string file_name = argv[1];
@@ -132,3 +133,4 @@ int main(int argc, char** argv) {
     std::system(cmd.c_str());
     return 0;
 }
+#endif
