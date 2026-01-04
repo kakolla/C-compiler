@@ -3,30 +3,11 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "parser.h"
 
 using std::cout;
 using std::endl;
 
-
-enum class TokenType {
-    LBrace, // {
-    RBrace, // }
-    LParen, // (
-    RParen,  // )
-    Semicolon, // ;
-    Mul,
-    Plus,
-    KeywordInt, // int
-    KeywordReturn, // return
-    Identifier, // names, like main, x
-    IntLiteral, // 999
-    EndOfFile
-};
-
-struct Token {
-    TokenType type;
-    std::string token_val;
-};
 
 std::vector<Token> lex(const std::string& program) {
     std::vector<Token> tokens;
