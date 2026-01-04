@@ -1,7 +1,9 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <sstream>
 #include "ast.h"
+#include "parser.h"
 
 std::string emit_expr(Expression* e, int si);
 
@@ -97,36 +99,38 @@ std::string compile_program(Expression* e, std::string func_name = "_c_entry") {
     return res;
 }
 
-// int main() {
-//     // std::string asm_code = compile_program(31415); // generate assembly code in a file
-//     // Expression number = {
-//     //     .type=ExpressionType::IntLiteral,
-//     //     .int_val=67
-//     // };
-//     // Expression testAST = {
-//     //     .type=ExpressionType::UnaryOp,
-//     //     .unary_op=UnaryOpType::Add1,
-//     //     .operand=&number
-//     // };
 
-//     Expression number = {
-//         .type=ExpressionType::IntLiteral,
-//         .int_val=67
-//     };
-//     Expression number2 = {
-//         .type=ExpressionType::IntLiteral,
-//         .int_val=42
-//     };
+extern std::vector<Token> lex(const std::string& program);
+extern Function* parse_function(std::vector<Token>& tokens);
 
-//     Expression testAST = {
-//         .type=ExpressionType::BinaryOp,
-//         .operand1=&number,
-//         .operand2=&number2
-//     };
+#ifdef COMPILE_COMPILER_TRUE
+int main(int argc, char** argv) {
+    if (argc < 2) throw std::runtime_error("Too few arguments.");
+    std::string file_name = argv[1];
+    std::ifstream ifile{file_name.c_str()};
+    std::stringstream buffer;
 
-//     std::string asm_code = compile_program(&testAST );
-//     std::ofstream output_stream("c_entry.s");
-//     output_stream << asm_code;
+    buffer << ifile.rdbuf();
+    std::string program = buffer.str();
+    // std::cout << program << std::endl;
+
+    // lex
+    std::vector<Token> tokens = lex(program);
+
+    // parse
+    Function* main_func = parse_function(tokens);
+
+    // code gen
+    std::string asm_code = compile_program(main_func->body->statements[0]->exp, "_main");
+
+    std::ofstream output_stream("compiled_binaries/" + file_name + ".s");
+    output_stream << asm_code;
     
-//     output_stream.close();
-// }
+    output_stream.close();
+
+    // run assembler
+    std::string cmd = "gcc compiled_binaries/" + file_name + ".s -o compiled_binaries/program";
+    std::system(cmd.c_str());
+    return 0;
+}
+#endif
