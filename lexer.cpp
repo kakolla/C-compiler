@@ -3,30 +3,13 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "parser.h"
 
 using std::cout;
 using std::endl;
 
 
-enum class TokenType {
-    LBrace, // {
-    RBrace, // }
-    LParen, // (
-    RParen,  // )
-    Semi, // ;
-    KeywordInt, // int
-    KeywordReturn, // return
-    Identifier, // names, like main, x
-    IntLiteral, // 999
-    EndOfFile
-};
-
-struct Token {
-    TokenType type;
-    std::string token_val;
-};
-
-std::vector<Token> lex(std::string program) {
+std::vector<Token> lex(const std::string& program) {
     std::vector<Token> tokens;
     // scan through program for tokens
     size_t i =0;
@@ -46,16 +29,43 @@ std::vector<Token> lex(std::string program) {
             tokens.push_back({TokenType::RParen, ")"});
             i++;
         } else if (c == ';') {
-            tokens.push_back({TokenType::Semi, ";"});
+            tokens.push_back({TokenType::Semicolon, ";"});
             i++;
-        } else if (isdigit(c))  {
-            // TODO: read digits
-            i++;
-        } else if (isalpha(c)) {
-            // TODO: read identifier/keyword (int, return, or identifier)
-            i++;
+        } else if (c == '*') {
+            tokens.push_back({TokenType::Mul, "*"});
+            i++;  
+        }
+        else if (c == '+') {
+            tokens.push_back({TokenType::Plus, "+"});
+            i++;  
+        }
+        else if (isdigit(c))  {
+            //  read digits
+            std::string temp;
+            while (i < program.size() && isdigit(program[i])) {
+                temp.push_back(program[i]);
+                i++;
+            }
+            tokens.push_back({TokenType::IntLiteral, temp});
+        } else if (isalpha(c) || c == '_') {
+            // read identifier/keyword (int, return, or identifier)
+            std::string temp;
+            while (i < program.size() && (isalnum(program[i]) || program[i] == '_')) {
+                // if character is alphanumeric or has _
+                temp.push_back(program[i]);
+                i++;
+            }
+            // check for identifiers
+            if (temp == "int") {
+                tokens.push_back({TokenType::KeywordInt, temp});
+            } else if (temp == "return") {
+                tokens.push_back({TokenType::KeywordReturn, temp});
+            } else {
+                tokens.push_back({TokenType::Identifier, temp});
+            }
         } else {
             // error
+            // TODO: return error to user
             tokens.clear();
             return tokens; 
         }
@@ -71,8 +81,9 @@ std::vector<Token> lex(std::string program) {
 // int main() {
 
 //     std::vector<Token> t = lex("int main() milk;");
+    
 //     for (auto e : t) {
-//         cout << e.token_val << endl;
+//         std::cout << e.token_val << std::endl;
 //     }
 //     return 0;
 // }
